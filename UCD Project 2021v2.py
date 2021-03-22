@@ -17,13 +17,19 @@ Crossfitsorted =Crossfit_Athletes_2020.sort_values("competitorid")
 
 print(Crossfitsorted)
 
-Crossfitduplicates_removed = Crossfitsorted.drop_duplicates(subset='competitorid', keep="first")
+Crossfitsorted_duplicates_removed = Crossfitsorted.drop_duplicates(subset='competitorid', keep="first")
 
-print(Crossfitduplicates_removed)
+print(Crossfitsorted_duplicates_removed)
 
+Crossfitsorted_duplicates_removed_male=Crossfitsorted_duplicates_removed.loc[Crossfitsorted_duplicates_removed['gender']=="M"]
 
+print(Crossfitsorted_duplicates_removed_male)
 
-#grouping
+Crossfitsorted_duplicates_removed_female= Crossfitsorted_duplicates_removed.loc[Crossfitsorted_duplicates_removed['gender']=="F"]
+
+print(Crossfitsorted_duplicates_removed_female)
+
+#grouping group by sexulaity#
 
 #slicing
 
