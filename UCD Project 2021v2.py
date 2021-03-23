@@ -1,58 +1,61 @@
 import pandas as pd
 import numpy as np
-import matplotlib as mat
+import matplotlib.pyplot as plt
 
 Crossfit_Athletes_2020 = pd.read_csv('TwentyTwenty_opens_athletes.csv')
 Crossfit_Athletes_2020_Scores = pd.read_csv('2020_opens_scores.csv')
 
 print(Crossfit_Athletes_2020.columns)
+print(Crossfit_Athletes_2020_Scores.columns)
 
-Crossfit_Athletes_2020.set_index("competitorid")
+Crossfit_Athletes_2020_Scores.set_index("competitorid")
 
-#Crossfitsort1 = Crossfit_Athletes_2020.sort_index()#
+Crossfit_Athletes_2020_dropped = Crossfit_Athletes_2020.drop(columns=["profilepics3key","countryoforigincode","affiliateid","countryoforiginname","is_scaled"], axis= 1, inplace= False )
 
-#print(Crossfitsort1)#
+print(Crossfit_Athletes_2020_dropped.columns)
 
-Crossfitsorted =Crossfit_Athletes_2020.sort_values("competitorid")
+Crossfit_Athletes_2020_dropped.set_index("competitorid")
+
+Crossfitsorted =Crossfit_Athletes_2020_dropped.sort_values('overallrank')
 
 print(Crossfitsorted)
 
-Crossfitsorted_duplicates_removed = Crossfitsorted.drop_duplicates(subset='competitorid', keep="first")
+Crossfit_Athletes_split_for_div_Women= Crossfitsorted.loc[Crossfitsorted['division']=="Women"]
 
-print(Crossfitsorted_duplicates_removed)
+Crossfit_Athletes_split_for_div_Women_dupes_removed = Crossfit_Athletes_split_for_div_Women.drop_duplicates(subset='competitorid', keep="last")
 
-Crossfitsorted_duplicates_removed_male=Crossfitsorted_duplicates_removed.loc[Crossfitsorted_duplicates_removed['gender']=="M"]
+Crossfitsorted_for_women_byrank = Crossfit_Athletes_split_for_div_Women_dupes_removed.sort_values('overallrank')
 
-print(Crossfitsorted_duplicates_removed_male)
+print(Crossfitsorted_for_women_byrank)
 
-Crossfitsorted_duplicates_removed_female= Crossfitsorted_duplicates_removed.loc[Crossfitsorted_duplicates_removed['gender']=="F"]
+Crossfit_Athletes_split_for_div_Men= Crossfitsorted.loc[Crossfitsorted['division']=="Men"]
 
-print(Crossfitsorted_duplicates_removed_female)
+Crossfit_Athletes_split_for_div_Men_dupes_removed = Crossfit_Athletes_split_for_div_Men.drop_duplicates(subset='competitorid', keep="last")
 
-#grouping group by sexulaity#
+Crossfitsorted_formen_byrank = Crossfit_Athletes_split_for_div_Men_dupes_removed.sort_values('overallrank')
 
-#slicing
+Crosfit_sorted_by_Age_men = Crossfit_Athletes_split_for_div_Men.sort_values('age')
 
-#iloc#
+print(Crosfit_sorted_by_Age_men [['competitorid','age']])
 
-#Itterows#
+print(Crossfitsorted_formen_byrank[['division','divisionid','overallscore', 'competitorname','competitorid']])
 
-# merge data frames#
+Plot_of_Men_Athletes_Age = Crossfit_Athletes_split_for_div_Men.hist(column='age', bins=15, color = "red")
+plt.title("Age Distribution: Men")
 
-#Crossfit_Athletes_2020['competitorid'] = Crossfit_Athletes_2020.index#
+plt.show()
 
+Plot_of_Women_Athletes_Age = Crossfit_Athletes_split_for_div_Women.hist(column='age', bins=15)
+plt.title("Age Distribution: Women")
 
-
-#print(Crossfit_Athletes_2020['height'])#
-#print(Crossfit_Athletes_2020['weight'])#
-
-
-
-#Crossfit_Athletes_2020.insert(20, column="BMI", value='height'*'weight')#
-
-# Creating a function - create a function that helps to clean the data - replaces the NaN with blanks#
+plt.show()
 
 
-# create visual using Matplotlib#
 
-#create visual using Seaborn#
+
+
+
+
+
+
+
