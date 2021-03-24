@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 Crossfit_Athletes_2020 = pd.read_csv('TwentyTwenty_opens_athletes.csv')
 Crossfit_Athletes_2020_Scores = pd.read_csv('2020_opens_scores.csv')
 
+print(Crossfit_Athletes_2020.info)
 print(Crossfit_Athletes_2020.columns)
 print(Crossfit_Athletes_2020_Scores.columns)
 
@@ -20,44 +21,52 @@ Crossfit_Athletes_2020_dropped = Crossfit_Athletes_2020.drop(columns=["profilepi
 
 print(Crossfit_Athletes_2020_dropped.columns)
 
-Crossfit_Athletes_2020_dropped.set_index("competitorid")
+print(Crossfit_Athletes_2020_dropped.info)
 
 Crossfitsorted =Crossfit_Athletes_2020_dropped.sort_values('overallrank')
 
 print(Crossfitsorted)
 
-Crossfit_Athletes_split_for_div_Women= Crossfitsorted.loc[Crossfitsorted['division']=="Women"]
+Crossfit_Athletes_split_for_gen_female= Crossfitsorted.loc[Crossfitsorted['gender']=="F"]
 
-Crossfit_Athletes_split_for_div_Women_dupes_removed = Crossfit_Athletes_split_for_div_Women.drop_duplicates(subset='competitorid', keep="last")
+Crossfit_Athletes_split_for_gen_female_dupes_removed = Crossfit_Athletes_split_for_gen_female.drop_duplicates(subset='competitorid', keep="last")
 
-Crossfitsorted_for_women_byrank = Crossfit_Athletes_split_for_div_Women_dupes_removed.sort_values('overallrank')
+print(Crossfit_Athletes_split_for_gen_female_dupes_removed.info)
+print(Crossfit_Athletes_split_for_gen_female_dupes_removed.max(axis=0)['age'])
+print(Crossfit_Athletes_split_for_gen_female_dupes_removed.min(axis=0)['age'])
+
+Crossfitsorted_for_women_byrank = Crossfit_Athletes_split_for_gen_female_dupes_removed.sort_values('overallrank')
 
 print(Crossfitsorted_for_women_byrank)
 
-Crossfit_Athletes_split_for_div_Men= Crossfitsorted.loc[Crossfitsorted['division']=="Men"]
+Crossfit_Athletes_split_for_gen_male= Crossfitsorted.loc[Crossfitsorted['gender']=="M"]
 
-Crossfit_Athletes_split_for_div_Men_dupes_removed = Crossfit_Athletes_split_for_div_Men.drop_duplicates(subset='competitorid', keep="last")
+Crossfit_Athletes_split_for_gen_male_dupes_removed = Crossfit_Athletes_split_for_gen_male.drop_duplicates(subset='competitorid', keep="last")
 
-Crossfitsorted_formen_byrank = Crossfit_Athletes_split_for_div_Men_dupes_removed.sort_values('overallrank')
+print(Crossfit_Athletes_split_for_gen_male_dupes_removed.info)
 
-Crosfit_sorted_by_Age_men = Crossfit_Athletes_split_for_div_Men.sort_values('age')
+Crossfitsorted_formen_byrank = Crossfit_Athletes_split_for_gen_male_dupes_removed.sort_values('overallrank')
 
-print(Crosfit_sorted_by_Age_men [['competitorid','age']])
+Crosfit_sorted_by_Age_male = Crossfit_Athletes_split_for_gen_male_dupes_removed.sort_values('age')
+print(Crossfit_Athletes_split_for_gen_male_dupes_removed)
+print(Crosfit_sorted_by_Age_male.max(axis=0)['age'])
+print(Crosfit_sorted_by_Age_male.min(axis=0)['age'])
+
+print(Crosfit_sorted_by_Age_male [['competitorid','age']])
 
 print(Crossfitsorted_formen_byrank[['division','divisionid','overallscore', 'competitorname','competitorid']])
 
-Plot_of_Men_Athletes_Age = Crossfit_Athletes_split_for_div_Men.hist(column='age', bins=15, color = "red")
-plt.title("Age Distribution: Men")
-
+Plot_of_Men_Athletes_Age = Crossfit_Athletes_split_for_gen_male_dupes_removed.hist(column='age', bins=15, color = "red")
+plt.title("Age Distribution: Male Athletes")
+plt.ylabel('Number of Athletes')
+plt.xlabel('Age')
 plt.show()
 
-Plot_of_Women_Athletes_Age = Crossfit_Athletes_split_for_div_Women.hist(column='age', bins=15)
-plt.title("Age Distribution: Women")
-
+Plot_of_Women_Athletes_Age = Crossfit_Athletes_split_for_gen_female_dupes_removed.hist(column='age', bins=15)
+plt.title("Age Distribution: Female Athletes")
+plt.ylabel('Number of Athletes')
+plt.xlabel('Age')
 plt.show()
-
-
-print(Crossfit_Athletes_split_for_div_Women.columns)
 
 print(Crossfitsorted_formen_byrank[['competitorname','weight','height','divisionid']])
 
@@ -67,12 +76,14 @@ print(Crossfit_Athletes_NaN_replaced_Sorted_formen_byrank[['competitorname','wei
 
 Crossfit_Athletes_2020_men_rank_reverse_order = Crossfit_Athletes_NaN_replaced_Sorted_formen_byrank.sort_values('overallrank',  ascending=False)
 
-#plt.scatter(x=Crossfit_Athletes_2020_men_rank_reverse_order['overallrank'], y=Crossfit_Athletes_2020_men_rank_reverse_order['BMI'])#
+#plt.scatter(x=Crossfit_Athletes_2020_men_rank_reverse_order['BMI'], y=Crossfit_Athletes_2020_men_rank_reverse_order['age'])#
 
 #plt.show()#
+BMI_sorted = Crossfit_Athletes_NaN_replaced_Sorted_formen_byrank.sort_values('BMI')
 
+print(BMI_sorted[['weight','height','height_squared','BMI']])
 
-
+#slice for any height <1)
 
 
 
