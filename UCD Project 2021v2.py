@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sea
 
 Crossfit_Athletes_2020 = pd.read_csv('TwentyTwenty_opens_athletes.csv')
 Crossfit_Athletes_2020_Scores = pd.read_csv('2020_opens_scores.csv')
@@ -12,6 +13,9 @@ print(Crossfit_Athletes_2020_Scores.columns)
 
 Crossfit_Athletes_2020["height_squared"] = Crossfit_Athletes_2020["height"]**2
 Crossfit_Athletes_2020['BMI'] = Crossfit_Athletes_2020["weight"] / Crossfit_Athletes_2020["height_squared"]
+
+Crossfit_Athletes_2020['BMI'] = np.where((Crossfit_Athletes_2020.BMI <1),'0',Crossfit_Athletes_2020.BMI)
+
 
 print(Crossfit_Athletes_2020.columns)
 
@@ -35,9 +39,9 @@ print(Crossfit_Athletes_split_for_gen_female_dupes_removed.info)
 print(Crossfit_Athletes_split_for_gen_female_dupes_removed.max(axis=0)['age'])
 print(Crossfit_Athletes_split_for_gen_female_dupes_removed.min(axis=0)['age'])
 
-Crossfitsorted_for_women_byrank = Crossfit_Athletes_split_for_gen_female_dupes_removed.sort_values('overallrank')
+Crossfitsorted_for_females_byrank = Crossfit_Athletes_split_for_gen_female_dupes_removed.sort_values('overallrank')
 
-print(Crossfitsorted_for_women_byrank)
+print(Crossfitsorted_for_females_byrank)
 
 Crossfit_Athletes_split_for_gen_male= Crossfitsorted.loc[Crossfitsorted['gender']=="M"]
 
@@ -51,6 +55,8 @@ Crosfit_sorted_by_Age_male = Crossfit_Athletes_split_for_gen_male_dupes_removed.
 print(Crossfit_Athletes_split_for_gen_male_dupes_removed)
 print(Crosfit_sorted_by_Age_male.max(axis=0)['age'])
 print(Crosfit_sorted_by_Age_male.min(axis=0)['age'])
+Count_of_Male_Competitors_2020 = Crossfit_Athletes_split_for_gen_male_dupes_removed.groupby(['competitorid']).count()
+print(Count_of_Male_Competitors_2020)
 
 print(Crosfit_sorted_by_Age_male [['competitorid','age']])
 
@@ -70,21 +76,13 @@ plt.show()
 
 print(Crossfitsorted_formen_byrank[['competitorname','weight','height','divisionid']])
 
-Crossfit_Athletes_NaN_replaced_Sorted_formen_byrank =Crossfitsorted_formen_byrank.replace(np.NaN, 0)
+Crossfit_Athletes_NaN_replaced_Sorted_formales_byrank =Crossfitsorted_formen_byrank.replace(np.NaN, 0)
 
-print(Crossfit_Athletes_NaN_replaced_Sorted_formen_byrank[['competitorname','weight','height','divisionid']])
+Crossfit_Athletes_NaN_replaced_Sorted_forfemales_byrank =Crossfitsorted_for_females_byrank.replace(np.NaN, 0)
 
-Crossfit_Athletes_2020_men_rank_reverse_order = Crossfit_Athletes_NaN_replaced_Sorted_formen_byrank.sort_values('overallrank',  ascending=False)
+Crossfit_2020_data_merged = pd.merge(Crossfit_Athletes_2020_Scores, Crossfit_Athletes_2020, on='competitorid')
 
-#plt.scatter(x=Crossfit_Athletes_2020_men_rank_reverse_order['BMI'], y=Crossfit_Athletes_2020_men_rank_reverse_order['age'])#
-
-#plt.show()#
-BMI_sorted = Crossfit_Athletes_NaN_replaced_Sorted_formen_byrank.sort_values('BMI')
-
-print(BMI_sorted[['weight','height','height_squared','BMI']])
-
-#slice for any height <1)
-
+print(Crossfit_2020_data_merged)
 
 
 
