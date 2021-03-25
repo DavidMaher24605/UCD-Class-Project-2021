@@ -82,8 +82,6 @@ Crossfit_Athletes_NaN_replaced_Sorted_forfemales_byrank =Crossfitsorted_for_fema
 
 Crossfit_2020_data_merged = pd.merge(Crossfit_Athletes_2020_Scores, Crossfit_Athletes_2020, on='competitorid')
 
-
-
 print(Crossfit_2020_data_merged)
 
 
